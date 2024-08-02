@@ -3,65 +3,55 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
-	"os"
+	// "os"
 )
 
-type api_response struct {
-    Message string `json:"message"`
+type Words struct {
+	Name       string `json:"name"`
+	Age        int    `json:"age"`
+	Occupation string `json:"occupation"`
+	Device     string `json:"device"`
+	BodyPart   string `json:"bodyPart"`
+	Mood       string `json:"mood"`
+	Action     string `json:"action"`
 }
 
-// // get request to api endpoint
-// func getRequest(url string) (*ApiResponse, error) {
-//     resp, err := http.Get(url)
-//     if err != nil {
-//         return nil, err
-//     }
-//     defer resp.Body.Close()
-
-//     body, err := ioutil.ReadAll(resp.Body)
-//     if err != nil {
-//         return nil, err
-//     }
-
-//     var apiResponse ApiResponse
-//     err = json.Unmarshal(body, &apiResponse)
-//     if err != nil {
-//         return nil, err
-//     }
-
-//     return &apiResponse, nil
-// }
-
-// server than returns json in response to requests
-// allows us to see what happens when we get json from a server 
-const url = "https://jsonplaceholder.typicode.com"
+const url = "http://localhost:8080/madlib"
 
 func main() {
-    // Define the API endpoint
+	// Define the API endpoint
 
-    resp, err := http.Get("http://localhost:8080/" + os.Args[1])
+	resp, err := http.Get(url)
 
-    fmt.Println(os.Args[1])
+	// fmt.Println(os.Args[1])
 
+	if err != nil {
+		log.Fatalf("Error making GET request: %v", err)
+	}
 
-    if err != nil {
-        log.Fatalf("Error making GET request: %v", err)
-    }
+	defer resp.Body.Close()
 
-    defer resp.Body.Close()
+	if resp.StatusCode == http.StatusOK {
+		body, err := io.ReadAll(resp.Body)
 
-    if resp.StatusCode == http.StatusOK {
-        body, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			log.Fatalf("Error reading response body: %v", err)
+		}
 
-        if err != nil {
-            log.Fatalf("Error reading response body: %v", err)
+		var words Words
 
-        }
+		err = json.Unmarshal(body, &words)
+		if err != nil {
+			log.Fatalf("Error unmarshalling response body: %v", err)
+		}
+		// this prints out raw json text
 
-        fmt.Println(string(body))
-    }
+		// fmt.Println(string(body))
+
+		fmt.Println(words)
+	}
 
 }
