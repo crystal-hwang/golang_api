@@ -1,27 +1,12 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"math/rand"
 	"net/http"
 	"time"
 )
-
-// type Joke struct {
-// 	Joke string `json:"joke"`
-// }
-
-// type Words struct {
-// 	Name       string `json:"name"`
-// 	Age        int    `json:"age"`
-// 	Occupation string `json:"occupation"`
-// 	Device     string `json:"device"`
-// 	BodyPart   string `json:"body_part"`
-// 	Mood       string `json:"mood"`
-// 	Action     string `json:"action"`
-// }
 
 func main() {
 	// Define routes
@@ -77,30 +62,12 @@ func madlib_handler(w http.ResponseWriter, r *http.Request) {
 	rand_mood := rand.Intn(len(moods))
 	rand_actions := rand.Intn(len(actions))
 
-	// words := Words{
-	// 	Name: names[rand_name],
-	// 	Age: ages[rand_age],
-	// 	Occupation: occupations[rand_job],
-	// 	Device: devices[rand_device],
-	// 	BodyPart: body_parts[rand_bp],
-	// 	Mood: moods[rand_mood],
-	// 	Action: actions[rand_actions],
-	// }
-
-    paragraph := fmt.Sprintf(
-        "%s is a %d-year-old %s who has been struggling with a lot of job-related stress. He/she decided to try a new application to relieve stress, which runs on a/an %s to help improve his/her mood.\n\nThe application senses his/her mood through a device he/she wears on his/her %s.\n\nWhen the device senses that he/she is %s, it responds by %s.", names[rand_name], ages[rand_age], occupations[rand_job], devices[rand_device], body_parts[rand_bp], moods[rand_mood], actions[rand_actions])
+	paragraph := fmt.Sprintf(
+		"%s is a %d-year-old %s who has been struggling with a lot of job-related stress. He/she decided to try a new application to relieve stress, which runs on a/an %s to help improve his/her mood.\n\nThe application senses his/her mood through a device he/she wears on his/her %s.\n\nWhen the device senses that he/she is %s, it responds by %s.", names[rand_name], ages[rand_age], occupations[rand_job], devices[rand_device], body_parts[rand_bp], moods[rand_mood], actions[rand_actions])
 
 	w.Header().Set("Content-Type", "application/json")
 
 	// writes to http response body which is sent bck to http
 	fmt.Fprintln(w, paragraph)
-
-	// Encoder that writes a response
-	// encoder := json.NewEncoder(w)
-
-	// if err := encoder.Encode(words); err != nil {
-	// 	http.Error(w, "Failed to encode response", http.StatusInternalServerError)
-	// 	return
-	// }
 
 }
