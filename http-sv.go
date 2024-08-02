@@ -65,7 +65,7 @@ func madlib_handler(w http.ResponseWriter, r *http.Request) {
 	paragraph := fmt.Sprintf(
 		"%s is a %d-year-old %s who has been struggling with a lot of job-related stress. He/she decided to try a new application to relieve stress, which runs on a/an %s to help improve his/her mood.\n\nThe application senses his/her mood through a device he/she wears on his/her %s.\n\nWhen the device senses that he/she is %s, it responds by %s.", names[rand_name], ages[rand_age], occupations[rand_job], devices[rand_device], body_parts[rand_bp], moods[rand_mood], actions[rand_actions])
 
-	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Content-Type", "text/plain")
 
 	// writes to http response body which is sent bck to http
 	fmt.Fprintln(w, paragraph)
